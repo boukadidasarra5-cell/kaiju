@@ -3,6 +3,8 @@ import { wsUrl } from './client';
 export type ServerEvent =
   | { event: 'stock_updated'; district_id: number; resource_id: number; new_quantity: number }
   | { event: 'transfer_conflict'; resource_id: number; district_id: number }
+  | { event: 'transfer_created'; transfer_id: number; resource_id: number; from_district_id: number; to_district_id: number; quantity: number }
+  | { event: 'transfer_updated'; transfer_id: number; status: string }
   | { event: 'disaster_level_changed'; district_id: number; level: number };
 
 const PING_MS = 25_000;

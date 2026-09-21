@@ -87,6 +87,15 @@ async def create_transfer(
     db.commit()
     db.refresh(transfer)
 
+    await manager.broadcast({
+        "event": "transfer_created",
+        "transfer_id": transfer.id,
+        "resource_id": transfer.resource_id,
+        "from_district_id": transfer.from_district_id,
+        "to_district_id": transfer.to_district_id,
+        "quantity": transfer.quantity,
+    })
+
     if is_conflict:
         await manager.broadcast({
             "event": "transfer_conflict",
@@ -233,6 +242,8 @@ async def approve_transfer(
     db.commit()
     db.refresh(transfer)
 
+    await manager.broadcast({"event": "transfer_updated", "transfer_id": transfer.id, "status": transfer.status.value})
+
     for stock in (source_stock, dest_stock):
         await manager.broadcast({
             "event": "stock_updated",
@@ -245,7 +256,7 @@ async def approve_transfer(
 
 
 @router.patch("/{transfer_id}/reject", response_model=TransferStatusOut)
-def reject_transfer(
+async def reject_transfer(
     transfer_id: int,
     db: Session = Depends(get_db),
     user: dict = Depends(get_current_user),
@@ -255,4 +266,6 @@ def reject_transfer(
     transfer.approved_by_id = int(user["id"])
     db.commit()
     db.refresh(transfer)
+
+    await manager.broadcast({"event": "transfer_updated", "transfer_id": transfer.id, "status": transfer.status.value})
     return transfer

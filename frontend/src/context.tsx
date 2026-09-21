@@ -162,6 +162,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
     } else if (e.event === 'transfer_conflict') {
       pushNotification('transfer-conflict', `CONFLICT: concurrent requests on ${resourceName(e.resource_id)} in ${quarterName(e.district_id)}`);
       refreshTransfers().catch(() => {});
+    } else if (e.event === 'transfer_created') {
+      pushNotification('transfer-update', `New request TR-${String(e.transfer_id).padStart(3, '0')}: ${e.quantity}× ${resourceName(e.resource_id)} ${quarterName(e.from_district_id)} → ${quarterName(e.to_district_id)}`);
+      refreshTransfers().catch(() => {});
+    } else if (e.event === 'transfer_updated') {
+      pushNotification('transfer-update', `Transfer TR-${String(e.transfer_id).padStart(3, '0')} ${e.status}`);
+      refreshTransfers().catch(() => {});
     } else if (e.event === 'disaster_level_changed') {
       const level = e.level as SeverityLevel;
       setQuarters(prev => prev.map(q => q.id === e.district_id ? { ...q, severity: level } : q));
@@ -230,7 +236,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       if (action === 'approve') await api.approveTransfer(t.apiId);
       else await api.rejectTransfer(t.apiId);
       await Promise.all([refreshTransfers(), refreshStocks()]);
-      pushNotification('transfer-update', `Transfer ${t.id.toUpperCase()} ${action === 'approve' ? 'approved' : 'rejected'}`);
     } catch (e) {
       pushNotification('error', errorMessage(e));
     }
