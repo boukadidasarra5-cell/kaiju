@@ -1,4 +1,4 @@
-from pydantic import BaseModel, model_validator
+from pydantic import BaseModel, model_validator, field_validator
 from app.models.user import RoleEnum
 ## ce que l'api accepte en entree et renvoie en sortie
 # verifie si district_id est fourni seulement si role =QC
@@ -8,6 +8,17 @@ class UserCreate(BaseModel): ##inscription
     password: str
     role: RoleEnum
     district_id: int | None = None
+
+    @field_validator("password") ##verifie que le mdp est assez solide
+    @classmethod
+    def validate_password_strength(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters long")
+        if not any(c.isupper() for c in v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not any(c.isdigit() for c in v):
+            raise ValueError("Password must contain at least one digit")
+        return v
 
     @model_validator(mode="after") ##verifie la coherence
     ## si role et district vont ensembles

@@ -16,10 +16,10 @@ export default function TokyorkMap() {
   const selectedQ = selected ? getQ(selected) : null;
 
   return (
-    <div className="flex gap-6 p-6 h-full" style={{ minHeight: 0 }}>
+    <div className="flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:h-full" style={{ minHeight: 0 }}>
       {/* SVG map */}
       <div className="flex-1 flex items-center justify-center min-w-0">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-2xl mx-auto">
           <svg
             viewBox={`0 0 ${MAP_SIZE.width} ${MAP_SIZE.height}`}
             className="w-full"
@@ -100,7 +100,7 @@ export default function TokyorkMap() {
       </div>
 
       {/* Side panel */}
-      <div className="w-72 shrink-0 space-y-4 overflow-y-auto">
+      <div className="w-full lg:w-72 shrink-0 space-y-4 lg:overflow-y-auto">
         {/* Selected district detail */}
         {selectedQ ? (
           <div className="rounded-xl p-5 space-y-4" style={{ backgroundColor: '#161b22', border: '1px solid #30363d' }}>

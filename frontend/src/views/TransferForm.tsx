@@ -114,7 +114,7 @@ export default function TransferForm() {
   }
 
   return (
-    <div className="p-6 space-y-6 max-w-2xl">
+    <div className="p-4 sm:p-6 space-y-6 max-w-2xl">
       <div>
         <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
           Transfer Request
@@ -141,7 +141,7 @@ export default function TransferForm() {
         </div>
 
         {/* From / To */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <label className="font-mono text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>From District</label>
             <select
@@ -170,7 +170,7 @@ export default function TransferForm() {
         {/* Route type */}
         <div className="space-y-1.5">
           <label className="font-mono text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>Route Type</label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {(['direct', 'transit', 'maritime'] as RouteType[]).map(rt => {
               const active   = route === rt;
               return (

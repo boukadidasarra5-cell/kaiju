@@ -3,11 +3,11 @@ import { useApp } from '../context';
 import SeverityBadge from './SeverityBadge';
 
 const NAV = [
-  { id: 'map',       label: 'CITY MAP'   },
-  { id: 'dashboard', label: 'DASHBOARD'  },
-  { id: 'resources', label: 'RESOURCES'  },
-  { id: 'calendar',  label: 'CALENDAR'   },
-  { id: 'transfer',  label: 'TRANSFER'   },
+  { id: 'map',       label: 'CITY MAP',  short: 'MAP'   },
+  { id: 'dashboard', label: 'DASHBOARD', short: 'DASH'  },
+  { id: 'resources', label: 'RESOURCES', short: 'RES'   },
+  { id: 'calendar',  label: 'CALENDAR',  short: 'CAL'   },
+  { id: 'transfer',  label: 'TRANSFER',  short: 'XFER'  },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -16,9 +16,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   const viewLabel = NAV.find(n => n.id === currentView)?.label ?? '';
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: '#0d1117' }}>
-      {/* Sidebar */}
-      <aside className="w-52 shrink-0 flex flex-col" style={{ borderRight: '1px solid #21262d' }}>
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden" style={{ backgroundColor: '#0d1117' }}>
+      {/* Sidebar (tablet landscape and up) */}
+      <aside className="hidden md:flex md:w-44 lg:w-52 shrink-0 flex-col" style={{ borderRight: '1px solid #21262d' }}>
         <div className="px-5 py-5" style={{ borderBottom: '1px solid #21262d' }}>
           <div className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
             KAIJU
@@ -28,7 +28,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
         <div className="px-5 py-4" style={{ borderBottom: '1px solid #21262d' }}>
           <div className="font-mono text-xs" style={{ color: '#58a6ff' }}>{user?.role}</div>
-          <div className="text-sm font-medium mt-0.5" style={{ color: '#f0f6fc' }}>{user?.username}</div>
+          <div className="text-sm font-medium mt-0.5 truncate" style={{ color: '#f0f6fc' }}>{user?.username}</div>
           {user?.quarter && (
             <div className="text-xs mt-0.5" style={{ color: '#8b949e' }}>{user.quarter} District</div>
           )}
@@ -75,41 +75,74 @@ export default function Layout({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         <header
-          className="flex items-center justify-between px-6 py-3 shrink-0"
+          className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 shrink-0"
           style={{ borderBottom: '1px solid #21262d' }}
         >
-          <h1
-            className="text-lg font-semibold tracking-widest"
-            style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}
-          >
-            {viewLabel}
-          </h1>
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="md:hidden text-lg font-bold shrink-0" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
+              KAIJU
+            </div>
+            <h1
+              className="hidden sm:block text-lg font-semibold tracking-widest truncate"
+              style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}
+            >
+              {viewLabel}
+            </h1>
+          </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             <div className="flex items-center gap-2">
-              <span className="font-mono text-xs" style={{ color: '#8b949e' }}>CITY THREAT</span>
+              <span className="hidden sm:inline font-mono text-xs" style={{ color: '#8b949e' }}>CITY THREAT</span>
               <SeverityBadge level={disasterLevel} size="md" />
             </div>
 
             {unread > 0 && (
               <div
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded"
+                className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded"
                 style={{ backgroundColor: 'rgba(249,115,22,0.12)', border: '1px solid rgba(249,115,22,0.35)' }}
               >
-                <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#f97316' }} />
-                <span className="font-mono text-xs" style={{ color: '#f97316' }}>
+                <div className="w-1.5 h-1.5 rounded-full animate-pulse shrink-0" style={{ backgroundColor: '#f97316' }} />
+                <span className="hidden sm:inline font-mono text-xs whitespace-nowrap" style={{ color: '#f97316' }}>
                   {unread} ALERT{unread > 1 ? 'S' : ''}
                 </span>
               </div>
             )}
+
+            <button
+              onClick={logout}
+              className="md:hidden font-mono text-xs shrink-0 transition-opacity hover:opacity-80"
+              style={{ color: '#8b949e' }}
+            >
+              EXIT
+            </button>
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
           {children}
         </main>
+
+        {/* Bottom nav (phone and tablet portrait) */}
+        <nav
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 grid grid-cols-5"
+          style={{ backgroundColor: '#0d1117', borderTop: '1px solid #21262d' }}
+        >
+          {NAV.map(item => (
+            <button
+              key={item.id}
+              onClick={() => setCurrentView(item.id)}
+              className="flex flex-col items-center justify-center gap-1 py-2.5 font-mono text-[10px] tracking-wider transition-colors"
+              style={{
+                color: currentView === item.id ? '#58a6ff' : '#8b949e',
+                borderTop: currentView === item.id ? '2px solid #58a6ff' : '2px solid transparent',
+              }}
+            >
+              {item.short}
+            </button>
+          ))}
+        </nav>
       </div>
     </div>
   );

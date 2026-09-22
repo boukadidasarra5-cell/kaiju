@@ -73,7 +73,7 @@ export default function CalendarView() {
   const maxPerDay = mode === 'week' ? 10 : 3;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
@@ -84,13 +84,13 @@ export default function CalendarView() {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center flex-wrap gap-3 sm:gap-4">
           <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid #30363d' }}>
             {(['week', 'month'] as Mode[]).map(m => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className="px-4 py-2 font-mono text-xs tracking-wide transition-colors"
+                className="px-3 sm:px-4 py-2 font-mono text-xs tracking-wide transition-colors"
                 style={{
                   backgroundColor: mode === m ? '#1c2128' : 'transparent',
                   color: mode === m ? '#f0f6fc' : '#8b949e',
@@ -109,7 +109,7 @@ export default function CalendarView() {
             >
               ←
             </button>
-            <span className="font-mono text-sm text-center" style={{ color: '#c9d1d9', minWidth: '200px' }}>
+            <span className="font-mono text-xs sm:text-sm text-center min-w-[150px] sm:min-w-[200px]" style={{ color: '#c9d1d9' }}>
               {periodLabel}
             </span>
             <button
@@ -127,7 +127,7 @@ export default function CalendarView() {
         {/* Day headers */}
         <div className="grid grid-cols-7" style={{ backgroundColor: '#161b22', borderBottom: '1px solid #30363d' }}>
           {DAY_NAMES.map(d => (
-            <div key={d} className="py-3 text-center font-mono text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>
+            <div key={d} className="py-2 sm:py-3 text-center font-mono text-[10px] sm:text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>
               {d}
             </div>
           ))}
@@ -148,9 +148,8 @@ export default function CalendarView() {
             return (
               <div
                 key={i}
-                className="space-y-1 p-2"
+                className={`space-y-1 p-1 sm:p-2 ${mode === 'week' ? 'min-h-[110px] sm:min-h-[160px] lg:min-h-[200px]' : 'min-h-[64px] sm:min-h-[96px]'}`}
                 style={{
-                  minHeight: mode === 'week' ? '200px' : '96px',
                   backgroundColor: isToday ? 'rgba(88,166,255,0.04)' : 'transparent',
                   borderRight:  !isLastCol  ? '1px solid #21262d' : 'none',
                   borderBottom: !isLastRow  ? '1px solid #21262d' : 'none',
@@ -158,7 +157,7 @@ export default function CalendarView() {
                 }}
               >
                 <div
-                  className="font-mono text-xs w-6 h-6 flex items-center justify-center rounded-full"
+                  className="font-mono text-[10px] sm:text-xs w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full"
                   style={{
                     color: isToday ? '#f0f6fc' : '#8b949e',
                     backgroundColor: isToday ? '#58a6ff' : 'transparent',
@@ -173,7 +172,7 @@ export default function CalendarView() {
                   return (
                     <div
                       key={t.id}
-                      className="rounded px-1.5 py-0.5 text-xs truncate cursor-default"
+                      className="rounded px-1 sm:px-1.5 py-0.5 text-[10px] sm:text-xs truncate cursor-default"
                       style={{ backgroundColor: cfg.bg, color: cfg.color }}
                       title={`${t.resource}: ${t.from} → ${t.to} ×${t.quantity} [${t.status}]`}
                     >
@@ -186,7 +185,7 @@ export default function CalendarView() {
                 })}
 
                 {dayT.length > maxPerDay && (
-                  <div className="text-xs font-mono" style={{ color: '#8b949e' }}>
+                  <div className="text-[10px] sm:text-xs font-mono" style={{ color: '#8b949e' }}>
                     +{dayT.length - maxPerDay}
                   </div>
                 )}

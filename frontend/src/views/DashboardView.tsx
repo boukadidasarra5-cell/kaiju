@@ -68,7 +68,7 @@ function QCDashboard() {
   const critCount = myQ.resources.filter(r => r.current <= r.retention).length;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
@@ -100,7 +100,7 @@ function QCDashboard() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Resources */}
         <div className="rounded-xl p-5 space-y-4" style={{ backgroundColor: '#161b22', border: '1px solid #30363d' }}>
           <div className="font-mono text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>
@@ -185,7 +185,7 @@ function LCDashboard() {
   const chains    = transfers.filter(t => t.routeType === 'transit');
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       <div>
         <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
           Logistics Overview
@@ -196,7 +196,7 @@ function LCDashboard() {
       </div>
 
       {/* Quarter mini cards */}
-      <div className="grid grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {quarters.map(q => {
           const info = SEVERITY_INFO[q.severity];
           const crit = q.resources.filter(r => r.current <= r.retention).length;
@@ -232,7 +232,7 @@ function LCDashboard() {
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* In transit */}
         <div className="rounded-xl p-5 space-y-3" style={{ backgroundColor: '#161b22', border: '1px solid #30363d' }}>
           <div className="font-mono text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>
@@ -308,7 +308,7 @@ function CDDashboard() {
   const { quarters, setQuarterSeverity, lowerRetentionThresholds, transfers } = useApp();
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 sm:p-6 space-y-6">
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <h2 className="text-3xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
@@ -332,8 +332,8 @@ function CDDashboard() {
               className="rounded-xl p-5"
               style={{ backgroundColor: '#161b22', border: `1px solid ${info.border}` }}
             >
-              <div className="flex items-center gap-6 flex-wrap">
-                <div className="w-32 shrink-0">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                <div className="w-full sm:w-32 shrink-0">
                   <div className="text-xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>
                     {q.name}
                   </div>
@@ -341,7 +341,7 @@ function CDDashboard() {
                 </div>
 
                 {/* Quick resource bars */}
-                <div className="flex-1 grid grid-cols-5 gap-3 min-w-0">
+                <div className="flex-1 grid grid-cols-3 sm:grid-cols-5 gap-3 min-w-0 w-full">
                   {q.resources.slice(0, 5).map(r => {
                     const pct = Math.min((r.current / r.initial) * 100, 100);
                     const isCrit = r.current <= r.retention;
@@ -423,7 +423,7 @@ function CDDashboard() {
         <div className="font-mono text-xs uppercase tracking-wider" style={{ color: '#8b949e' }}>
           All Transfers | Recent Activity
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {transfers.slice(0, 8).map(t => <TransferRow key={t.id} t={t} actions />)}
         </div>
       </div>

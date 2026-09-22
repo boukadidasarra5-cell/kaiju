@@ -90,7 +90,7 @@ export default function Login() {
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 flex items-center justify-center p-8">
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-8">
         <div className="w-full max-w-md space-y-8">
           <div className="lg:hidden">
             <div className="text-4xl font-bold" style={{ fontFamily: 'var(--font-display)', color: '#f0f6fc' }}>KAIJU</div>

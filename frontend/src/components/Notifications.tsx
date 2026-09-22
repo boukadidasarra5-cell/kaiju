@@ -13,7 +13,7 @@ export default function Notifications() {
   const visible = notifications.filter(n => !n.read).slice(0, 4);
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 w-80 pointer-events-none">
+    <div className="fixed top-3 left-3 right-3 sm:left-auto sm:top-4 sm:right-4 sm:w-80 z-50 flex flex-col gap-2 pointer-events-none">
       {visible.map(n => {
         const cfg = TYPE_CONFIG[n.type];
         return (
